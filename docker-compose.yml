@@ -1,0 +1,24 @@
+version: '3'
+services:
+  harder-backend:
+    image: hitalos/laravel:latest
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    ports:
+      - 5050:80
+    environment:
+      - "MYSQL_DATABASE=harder_local"
+      - "DB_HOST=mariadb"
+    command: composer update
+    command: php artisan migrate
+    command: php artisan passport:install
+    command: php -S 0.0.0.0:80 -t public public/index.php
+  mariadb:
+    image: mariadb:10.1.23
+    environment:
+      - "MYSQL_DATABASE=harder_local"
+      - "MYSQL_ROOT_PASSWORD=APRUEBA2018"
+      - "MYSQL_USER=root"
+    ports:
+      - 3333:3306
